@@ -17,6 +17,8 @@ FlickrのAPIを試す場合は、ココ
 https://www.flickr.com/services/api/explore/flickr.photos.search
 
 AWSにアップロードする際は、以下のコマンドでビルド後、ZIPファイルを作って、アップロードしてください。
+
 $ GOOS=linux GOARCH=amd64 go build -o hello
+
 $ zip hello.zip hello
 
