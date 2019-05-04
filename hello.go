@@ -8,6 +8,7 @@ import (
 
 	"encoding/json"
 	"fmt"
+	"os"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -16,7 +17,6 @@ import (
 
 const (
 	ENDPOINT = "https://api.flickr.com/services/rest/"
-	API_KEY  = FLICKR_API_KEY
 )
 
 // レスポンスJSONデータ用構造体
@@ -97,16 +97,37 @@ type MyEvent struct {
 
 func hello(ctx context.Context, params MyEvent) (interface{}, error) {
 
+	lat := "35.658587"
+	lon := "139.745433"
+	per_page := "10"
+	page := "1"
+
+	if params.Lat != "" {
+		lat = params.Lat
+	}
+
+	if params.Lon != "" {
+		lon = params.Lon
+	}
+
+	if params.PerPage != "" {
+		per_page = params.PerPage
+	}
+
+	if params.Page != "" {
+		page = params.Page
+	}
+
 	// URL生成
 	q := map[string]string{
 		"method":         "flickr.photos.search",
-		"api_key":        API_KEY,
-		"lat":            params.Lat,
-		"lon":            params.Lon,
+		"api_key":        os.Getenv("FLICKR_API_KEY"),
+		"lat":            lat,
+		"lon":            lon,
 		"format":         "json",
 		"nojsoncallback": "1",
-		"per_page":       params.PerPage,
-		"page":           params.Page,
+		"per_page":       per_page,
+		"page":           page,
 		"radius":         "1",
 	}
 	url := fmt.Sprintf("%s?%s", ENDPOINT, buildQuery(q))
@@ -140,7 +161,7 @@ func hello(ctx context.Context, params MyEvent) (interface{}, error) {
 		photoInfo.Isfriend = photo.Isfriend
 		photoInfo.Isfamily = photo.Isfamily
 		// 写真URLを組み立てる
-		var photoUrl = fmt.Sprintf("https://farm%d.staticflickr.com/%s/%s_%s.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
+		var photoUrl = fmt.Sprintf("https://farm%d.staticflickr.com/%s/%s_%s_b.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
 		photoInfo.URL = photoUrl
 		// 	fmt.Printf("https://farm%d.staticflickr.com/%s/%s_%s.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
 		// 	fmt.Printf("%s: [%d][%s][%s]\n", photo.ID, photo.Farm, photo.Server, photo.Secret)
