@@ -99,7 +99,7 @@ func hello(ctx context.Context, params MyEvent) (interface{}, error) {
 
 	lat := "35.658587"
 	lon := "139.745433"
-	per_page := "10"
+	per_page := "15"
 	page := "1"
 
 	if params.Lat != "" {
@@ -161,7 +161,7 @@ func hello(ctx context.Context, params MyEvent) (interface{}, error) {
 		photoInfo.Isfriend = photo.Isfriend
 		photoInfo.Isfamily = photo.Isfamily
 		// 写真URLを組み立てる
-		var photoUrl = fmt.Sprintf("https://farm%d.staticflickr.com/%s/%s_%s_b.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
+		var photoUrl = fmt.Sprintf("https://farm%d.staticflickr.com/%s/%s_%s_m.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
 		photoInfo.URL = photoUrl
 		// 	fmt.Printf("https://farm%d.staticflickr.com/%s/%s_%s.jpg", photo.Farm, photo.Server, photo.ID, photo.Secret)
 		// 	fmt.Printf("%s: [%d][%s][%s]\n", photo.ID, photo.Farm, photo.Server, photo.Secret)
